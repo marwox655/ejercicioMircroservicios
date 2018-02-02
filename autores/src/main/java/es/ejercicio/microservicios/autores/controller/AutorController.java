@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.ejercicio.microservicios.autores.entity.Autor;
-import es.ejercicio.microservicios.autores.service.impl.AutorServiceImpl;
+import es.ejercicio.microservicios.autores.service.AutorService;
 import es.ejercicio.microservicios.dto.AutorDTO;
 
 
@@ -22,7 +22,7 @@ public class AutorController {
 
 
     @Autowired
-    private AutorServiceImpl autorService;
+    private AutorService autorService;
 
     /** DozerMapper. */
     DozerBeanMapper mapper = new DozerBeanMapper();

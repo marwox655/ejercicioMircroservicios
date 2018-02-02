@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.ejercicio.microservicios.dto.LibroDTO;
 import es.ejercicio.microservicios.libros.entity.Libro;
-import es.ejercicio.microservicios.libros.service.impl.LibroServiceImpl;
+import es.ejercicio.microservicios.libros.service.LibroService;
 
 
 
@@ -22,7 +22,7 @@ class LibroController {
 
 
     @Autowired
-    private LibroServiceImpl libroService;
+    private LibroService libroService;
 
     /** DozerMapper. */
     DozerBeanMapper mapper = new DozerBeanMapper();
