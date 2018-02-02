@@ -20,8 +20,15 @@ public class EditorialServiceImpl implements EditorialService {
 
 	@Override
 	public List<Editorial> findAll() {
-
+		log.debug("Se obtienen todas las editoriales");
 		return editorialRepository.findAll();
+	}
+
+
+	@Override
+	public Editorial findById(Integer id) {
+		log.debug("Se obtiene la editorial con id:" + id);
+		return editorialRepository.findOne(id);
 	}
 
 }

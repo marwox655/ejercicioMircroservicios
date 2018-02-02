@@ -6,6 +6,9 @@ import java.util.List;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import es.ejercicio.microservicios.dto.EditorialDTO;
 import es.ejercicio.microservicios.editoriales.entity.Editorial;
 import es.ejercicio.microservicios.editoriales.service.EditorialService;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/editoriales/")
 public class EditorialController {
@@ -44,6 +49,28 @@ public class EditorialController {
 
     	}
         return editorialesDTO;
+
+    }
+
+    /**
+     * Retorna la editorial del id
+     * @return Editorial
+     * @throws SQLException
+     */
+    @RequestMapping(value = "/getEditorial/{id}", method = RequestMethod.GET)
+    public ResponseEntity<EditorialDTO> getEditorial(@PathVariable("id") String id) throws SQLException {
+    	Integer idEditorial = 0;
+    	try
+    	{
+    		idEditorial = Integer.parseInt(id);
+    	} catch (NumberFormatException ex) {
+    		log.error("Se ha producido un error, el id no es un valor numerico:" + ex.getMessage());
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new EditorialDTO());
+    	}
+    	Editorial editorial = editorialService.findById(idEditorial);
+       	EditorialDTO editorialDTO= (EditorialDTO) mapper.map(editorial, EditorialDTO.class);
+
+       	return ResponseEntity.status(HttpStatus.OK).body(editorialDTO);
 
     }
 

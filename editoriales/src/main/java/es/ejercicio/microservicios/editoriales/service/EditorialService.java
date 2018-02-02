@@ -7,4 +7,6 @@ import es.ejercicio.microservicios.editoriales.entity.Editorial;
 public interface EditorialService {
 
     public List<Editorial> findAll();
+
+    public Editorial findById(Integer id);
 }

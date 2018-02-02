@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -83,6 +84,29 @@ public class EditorialControllerTest {
 						        	.andExpect(status().isOk())
 						        	.andExpect(jsonPath("$", not(empty())))
 						        	.andExpect(jsonPath("$.[0].id", is(1) ));
+		} catch (JsonProcessingException e1) {
+			fail(e1.getMessage());
+		} catch (Exception e) {
+			fail(e.getMessage());
+		}
+
+	}
+
+	@Test
+	public void testAutorPorId() {
+
+		Editorial editorial = Editorial.builder().id(1).nombre("Editorial 1").build();
+
+
+
+		when(editorialRepository.findOne(anyInt())).thenReturn(editorial);
+		when(editorialService.findById(anyInt())).thenReturn(editorial);
+		try {
+			ResultActions res = this.mockMvc.perform(get("/editoriales/getEditorial/1"))
+									.andDo(print())
+						        	.andExpect(status().isOk())
+						        	.andExpect(jsonPath("$", not(empty())))
+						        	.andExpect(jsonPath("$.id", is(1) ));
 		} catch (JsonProcessingException e1) {
 			fail(e1.getMessage());
 		} catch (Exception e) {

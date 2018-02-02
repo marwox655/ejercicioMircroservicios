@@ -14,6 +14,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.ejercicio.microservicios.dto.EditorialDTO;
+
 
 /**
  * @author Juan Manuel Cintas
@@ -27,11 +29,13 @@ public class EditorialControllerTestIT {
 	private int port;
 
 	private URL base;
+	private URL baseById;
 
 	@Autowired
 	private TestRestTemplate template;
 
 	private final String NOMBRE_SERVICIO = "editoriales/getAll/";
+	private final String NOMBRE_SERVICIO_BY_ID= "editoriales/getEditorial/1";
 
 	private final String STATUS_OK = "200";
 	private final Integer NUM_TOTAL_EDITORIALES = 5;
@@ -39,6 +43,7 @@ public class EditorialControllerTestIT {
 	@Before
 	public void setUp() throws Exception {
 	     this.base = new URL("http://localhost:" + port + "/"+ NOMBRE_SERVICIO);
+	     this.baseById = new URL("http://localhost:" + port + "/"+ NOMBRE_SERVICIO_BY_ID);
 	}
 
 	@Test
@@ -50,6 +55,19 @@ public class EditorialControllerTestIT {
 	     assertEquals(STATUS_OK, response.getStatusCode().toString());
 	     Object[] objects = response.getBody();
 	     assertEquals(NUM_TOTAL_EDITORIALES.intValue(), objects.length);
+
+	 }
+
+	@Test
+	public void getEditorialById() throws Exception {
+
+
+	     ResponseEntity<EditorialDTO> response = template.getForEntity(baseById.toString(), EditorialDTO.class);
+
+	     assertEquals(STATUS_OK, response.getStatusCode().toString());
+	     EditorialDTO editorial = (EditorialDTO) response.getBody();
+
+	     assertEquals(1, editorial.getId());
 
 	 }
 

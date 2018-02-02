@@ -14,6 +14,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.ejercicio.microservicios.dto.AutorDTO;
+
 
 /**
  * @author Juan Manuel Cintas
@@ -27,11 +29,13 @@ public class AutoresControllerTestIT {
 	private int port;
 
 	private URL base;
+	private URL baseById;
 
 	@Autowired
 	private TestRestTemplate template;
 
 	private final String NOMBRE_SERVICIO = "autores/getAll/";
+	private final String NOMBRE_SERVICIO_BY_ID= "autores/getAutor/1";
 
 	private final String STATUS_OK = "200";
 	private final Integer NUM_TOTAL_AUTORES = 5;
@@ -39,6 +43,7 @@ public class AutoresControllerTestIT {
 	@Before
 	public void setUp() throws Exception {
 	     this.base = new URL("http://localhost:" + port + "/"+ NOMBRE_SERVICIO);
+	     this.baseById = new URL("http://localhost:" + port + "/"+ NOMBRE_SERVICIO_BY_ID);
 	}
 
 	@Test
@@ -52,5 +57,19 @@ public class AutoresControllerTestIT {
 	     assertEquals(NUM_TOTAL_AUTORES.intValue(), objects.length);
 
 	 }
+
+	@Test
+	public void getAutorById() throws Exception {
+
+
+	     ResponseEntity<AutorDTO> response = template.getForEntity(baseById.toString(), AutorDTO.class);
+
+	     assertEquals(STATUS_OK, response.getStatusCode().toString());
+	     AutorDTO autor = (AutorDTO) response.getBody();
+
+	     assertEquals(1, autor.getId());
+
+	 }
+
 
 }

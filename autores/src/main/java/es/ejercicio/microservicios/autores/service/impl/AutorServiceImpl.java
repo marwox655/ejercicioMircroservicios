@@ -20,8 +20,15 @@ public class AutorServiceImpl implements AutorService {
 
 	@Override
 	public List<Autor> findAll() {
-
+		log.debug("Se obtienen todos los autores.");
 		return autorRepository.findAll();
+	}
+
+
+	@Override
+	public Autor findById(Integer id) {
+		log.debug("Se obtiene el autor con id:" + id);
+		return autorRepository.findOne(id);
 	}
 
 }
