@@ -1,13 +1,16 @@
 package es.ejercicio.microservicios.libros.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.ejercicio.microservicios.dto.LibroDTO;
 import es.ejercicio.microservicios.libros.entity.Libro;
 import es.ejercicio.microservicios.libros.service.impl.LibroServiceImpl;
 
@@ -21,6 +24,8 @@ class LibroController {
     @Autowired
     private LibroServiceImpl libroService;
 
+    /** DozerMapper. */
+    DozerBeanMapper mapper = new DozerBeanMapper();
 
     /**
      * Retorna todos los libros
@@ -28,9 +33,20 @@ class LibroController {
      * @throws SQLException
      */
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public List<Libro> getAll() throws SQLException {
+    public List<LibroDTO> getAll() throws SQLException {
 
-        return libroService.findAll();
+    	List<Libro> libros = libroService.findAll();
+       	List<LibroDTO> librosDTO = new ArrayList<LibroDTO>();
+    	if (libros != null)
+    	{
+    		for (Libro libro : libros) {
+    			LibroDTO libroDTO= (LibroDTO) mapper.map(libro, LibroDTO.class);
+    			librosDTO.add(libroDTO);
+    		}
+
+    	}
+        return librosDTO;
+
 
     }
 
@@ -41,9 +57,20 @@ class LibroController {
      * @throws SQLException
      */
     @RequestMapping(value = "/getFavoritos", method = RequestMethod.GET)
-    public List<Libro> getFavoritos() throws SQLException {
+    public List<LibroDTO> getFavoritos() throws SQLException {
 
-        return libroService.findByFavoriteTrue();
+    	List<Libro> libros = libroService.findByFavoriteTrue();
+       	List<LibroDTO> librosDTO = new ArrayList<LibroDTO>();
+    	if (libros != null)
+    	{
+    		for (Libro libro : libros) {
+    			LibroDTO libroDTO= (LibroDTO) mapper.map(libro, LibroDTO.class);
+    			librosDTO.add(libroDTO);
+    		}
+
+    	}
+        return librosDTO;
+
     }
 
 
