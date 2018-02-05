@@ -75,4 +75,23 @@ public class AutorController {
 
     }
 
+    /**
+     * Elimina el autor del id
+     * @throws SQLException
+     */
+    @RequestMapping(value = "/deleteAutor/{id}", method = RequestMethod.DELETE)
+    public HttpStatus deleteAutor(@PathVariable("id") String id) throws SQLException {
+    	Integer idAutor = 0;
+    	try
+    	{
+    		idAutor = Integer.parseInt(id);
+    	} catch (NumberFormatException ex) {
+    		log.error("Se ha producido un error, el id no es un valor numerico:" + ex.getMessage());
+    		return HttpStatus.NOT_FOUND;
+    	}
+    	autorService.deleteById(idAutor);
+
+       	return HttpStatus.OK;
+    }
+
 }

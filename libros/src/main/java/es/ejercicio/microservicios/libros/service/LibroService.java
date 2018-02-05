@@ -9,4 +9,6 @@ public interface LibroService {
     public List<Libro> findByFavoriteTrue();
 
     public List<Libro> findAll();
+
+    public List<Libro> findByExample(Libro libro);
 }

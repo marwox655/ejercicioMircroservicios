@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,9 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import es.ejercicio.microservicios.dto.LibroDTO;
 import es.ejercicio.microservicios.libros.entity.Libro;
 import es.ejercicio.microservicios.libros.service.LibroService;
+import lombok.extern.slf4j.Slf4j;
 
 
-
+@Slf4j
 @RestController
 @RequestMapping(value = "/libros/")
 class LibroController {
@@ -73,5 +75,35 @@ class LibroController {
 
     }
 
+    /**
+     * Añade una nueva categoria
+     * @return Categoria
+     * @throws SQLException
+     */
+    @RequestMapping(value = "/getByExample", method = RequestMethod.POST)
+    public List<LibroDTO> librosByExample(@RequestBody LibroDTO input) throws SQLException {
+    	log.debug("Se obtienen los libros coincidentes con:" + input);
+
+    	Libro libroInput = Libro.builder().id(null)
+    								 .descripcion(input.getDescripcion())
+    								 .titulo(input.getTitulo())
+    								 .autor(input.getAutor())
+    								 .categoria(input.getCategoria())
+    								 .editorial(input.getEditorial())
+    								 .build();
+
+    	List<Libro> libros = libroService.findByExample(libroInput);
+       	List<LibroDTO> librosDTO = new ArrayList<LibroDTO>();
+    	if (libros != null)
+    	{
+    		for (Libro libro : libros) {
+    			LibroDTO libroDTO= (LibroDTO) mapper.map(libro, LibroDTO.class);
+    			librosDTO.add(libroDTO);
+    		}
+
+    	}
+        return librosDTO;
+
+    }
 
 }

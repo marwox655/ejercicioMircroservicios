@@ -11,8 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.google.gson.Gson;
+
+import es.ejercicio.microservicios.dto.CategoriaDTO;
+import es.ejercicio.microservicios.dto.LibroDTO;
 
 
 /**
@@ -28,12 +36,14 @@ public class LibrosControllerTestIT {
 
 	private URL base;
 	private URL baseFavoritos;
+	private URL baseByExample;
 
 	@Autowired
 	private TestRestTemplate template;
 
 	private final String NOMBRE_SERVICIO = "libros/getAll/";
 	private final String NOMBRE_SERVICIO_FAVORITOS = "libros/getFavoritos/";
+	private final String NOMBRE_SERVICIO_BY_EXAMPLE = "libros/getByExample/";
 
 	private final String STATUS_OK = "200";
 	private final Integer NUM_TOTAL_LIBROS = 8;
@@ -43,6 +53,7 @@ public class LibrosControllerTestIT {
 	public void setUp() throws Exception {
 	     this.base = new URL("http://localhost:" + port + "/"+ NOMBRE_SERVICIO);
 	     this.baseFavoritos = new URL("http://localhost:" + port + "/"+ NOMBRE_SERVICIO_FAVORITOS);
+	     this.baseByExample = new URL("http://localhost:" + port + "/"+ NOMBRE_SERVICIO_BY_EXAMPLE);
 	}
 
 	@Test
@@ -66,6 +77,31 @@ public class LibrosControllerTestIT {
 	     assertEquals(STATUS_OK, response.getStatusCode().toString());
 	     Object[] objects = response.getBody();
 	     assertEquals(NUM_TOTAL_FAVORITOS.intValue(), objects.length);
+
+	 }
+
+	@Test
+	public void getListLibrosByExample() throws Exception {
+
+		Gson gson = new Gson();
+
+		LibroDTO categoriaDTO = LibroDTO.builder()
+						.autor(2)
+						.categoria(2)
+						.build();
+		String json = gson.toJson(categoriaDTO);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+		HttpEntity<String> entity = new HttpEntity<String>(json,headers);
+
+		 ResponseEntity<Object[]> response = template.postForEntity(baseByExample.toString(),entity,
+				 Object[].class);
+
+	     assertEquals(STATUS_OK, response.getStatusCode().toString());
+	     Object[] objects = response.getBody();
+	     assertEquals(1, objects.length);
+
 
 	 }
 

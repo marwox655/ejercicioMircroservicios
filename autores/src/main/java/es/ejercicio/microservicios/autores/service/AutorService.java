@@ -9,4 +9,6 @@ public interface AutorService {
     public List<Autor> findAll();
 
     public Autor findById(Integer id);
+
+    public void deleteById(Integer id);
 }

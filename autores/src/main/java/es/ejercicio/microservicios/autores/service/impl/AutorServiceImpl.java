@@ -21,6 +21,7 @@ public class AutorServiceImpl implements AutorService {
 	@Override
 	public List<Autor> findAll() {
 		log.debug("Se obtienen todos los autores.");
+
 		return autorRepository.findAll();
 	}
 
@@ -29,6 +30,14 @@ public class AutorServiceImpl implements AutorService {
 	public Autor findById(Integer id) {
 		log.debug("Se obtiene el autor con id:" + id);
 		return autorRepository.findOne(id);
+	}
+
+
+	@Override
+	public void deleteById(Integer id) {
+		log.debug("Se elimina el autor con id:" + id);
+		 autorRepository.delete(id);
+
 	}
 
 }

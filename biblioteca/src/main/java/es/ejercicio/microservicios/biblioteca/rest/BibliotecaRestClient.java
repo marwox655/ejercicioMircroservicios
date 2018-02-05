@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,12 @@ public class BibliotecaRestClient {
 	@Value("${path.libros.getAll}")
 	@Getter private String sURL_Libros;
 
+	@Value("${path.libros.getFavoritos}")
+	@Getter private String sURL_LibrosFavoritos;
+
+	@Value("${path.libros.getByExample}")
+	@Getter private String sURL_LibrosByExample;
+
 	@Value("${path.categorias.getId}")
 	@Getter private String sURL_CategoriaId;
 
@@ -35,12 +42,34 @@ public class BibliotecaRestClient {
 	@Value("${path.autor.getId}")
 	@Getter private String sURL_AutorId;
 
+	@Value("${path.autor.deleteId}")
+	@Getter private String sURL_DeleteAutorId;
+
 	@Autowired
     private RestTemplate restTemplate;
 
 	public List<LibroDTO> getListaLibros() {
 		ResponseEntity<List<LibroDTO>> response =
 				restTemplate.exchange(sURL_Libros,HttpMethod.GET,null,
+    		 					new ParameterizedTypeReference<List<LibroDTO>>() {});
+		List<LibroDTO> listaLibros = response.getBody();
+		return listaLibros;
+
+	}
+
+	public List<LibroDTO> getListaLibrosFavoritos() {
+		ResponseEntity<List<LibroDTO>> response =
+				restTemplate.exchange(sURL_LibrosFavoritos,HttpMethod.GET,null,
+    		 					new ParameterizedTypeReference<List<LibroDTO>>() {});
+		List<LibroDTO> listaLibros = response.getBody();
+		return listaLibros;
+
+	}
+
+	public List<LibroDTO> getListaLibrosByExample(LibroDTO example) {
+		HttpEntity<LibroDTO> request = new HttpEntity<>(example);
+		ResponseEntity<List<LibroDTO>> response =
+				restTemplate.exchange(sURL_LibrosByExample,HttpMethod.POST,request,
     		 					new ParameterizedTypeReference<List<LibroDTO>>() {});
 		List<LibroDTO> listaLibros = response.getBody();
 		return listaLibros;
@@ -66,6 +95,12 @@ public class BibliotecaRestClient {
 		AutorDTO autor = restTemplate.getForObject(sURL, AutorDTO.class);
 
 		return autor;
+	}
+
+	public void deleteAutor(Integer idAutor) {
+		String sURL = sURL_DeleteAutorId.concat(idAutor.toString());
+		restTemplate.delete(sURL);
+
 	}
 
     public LibroBibliotecaDTO obtenerValoresLibro(LibroDTO libro) {

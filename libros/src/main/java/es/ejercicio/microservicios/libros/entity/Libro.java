@@ -23,7 +23,7 @@ public class Libro {
      * Id.
      */
     @Id
-    private int id;
+    private Integer id;
 
     /**
      * Titulo del libro.
@@ -38,17 +38,17 @@ public class Libro {
     /**
      * Categoria ID.
      */
-    private int categoria;
+    private Integer categoria;
 
     /**
      * Autor ID.
      */
-    private int autor;
+    private Integer autor;
 
     /**
      * Editorial ID.
      */
-    private int editorial;
+    private Integer editorial;
 
     /**
      * Favorite
