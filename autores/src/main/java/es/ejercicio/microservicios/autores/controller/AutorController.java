@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -92,6 +93,27 @@ public class AutorController {
     	autorService.deleteById(idAutor);
 
        	return HttpStatus.OK;
+    }
+
+
+    /**
+     * Añade un nuevo autor
+     * @return Autor
+     * @throws SQLException
+     */
+    @RequestMapping(value = "/nuevoAutor", method = RequestMethod.POST)
+    public ResponseEntity<AutorDTO> nuevoAutor(@RequestBody AutorDTO input) throws SQLException {
+    	log.debug("Se intenta insertar el autor:" + input);
+
+    	Autor autor = Autor.builder().id(input.getId())
+    											 .nombre(input.getNombre())
+    											 .build();
+
+    	Autor nuevoAutor = autorService.nuevoAutor(autor);
+    	AutorDTO autorDTO= (AutorDTO) mapper.map(nuevoAutor, AutorDTO.class);
+
+       	return ResponseEntity.status(HttpStatus.OK).body(autorDTO);
+
     }
 
 }

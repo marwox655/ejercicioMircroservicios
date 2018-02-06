@@ -10,5 +10,7 @@ public interface CategoriaService {
 
     public Categoria findById(Integer id);
 
+    public void deleteById(Integer id);
+
     public Categoria nuevaCategoria(Categoria categoria);
 }

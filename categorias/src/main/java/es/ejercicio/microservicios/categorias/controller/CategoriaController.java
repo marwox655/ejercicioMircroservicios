@@ -77,6 +77,25 @@ public class CategoriaController {
     }
 
     /**
+     * Elimina la categoria del id
+     * @throws SQLException
+     */
+    @RequestMapping(value = "/deleteCategoria/{id}", method = RequestMethod.DELETE)
+    public HttpStatus deleteCategoria(@PathVariable("id") String id) throws SQLException {
+    	Integer idAutor = 0;
+    	try
+    	{
+    		idAutor = Integer.parseInt(id);
+    	} catch (NumberFormatException ex) {
+    		log.error("Se ha producido un error, el id no es un valor numerico:" + ex.getMessage());
+    		return HttpStatus.NOT_FOUND;
+    	}
+    	categoriaService.deleteById(idAutor);
+
+       	return HttpStatus.OK;
+    }
+
+    /**
      * Añade una nueva categoria
      * @return Categoria
      * @throws SQLException

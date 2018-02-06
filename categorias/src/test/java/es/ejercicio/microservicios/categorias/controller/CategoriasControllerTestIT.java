@@ -36,6 +36,8 @@ public class CategoriasControllerTestIT {
 	private URL base;
 	private URL baseById;
 	private URL baseNuevaCategoria;
+	private URL baseEliminarCategoria;
+
 
 	@Autowired
 	private TestRestTemplate template;
@@ -43,24 +45,18 @@ public class CategoriasControllerTestIT {
 	private final String NOMBRE_SERVICIO = "categorias/getAll/";
 	private final String NOMBRE_SERVICIO_BY_ID= "categorias/getCategoria/1";
 	private final String NOMBRE_SERVICIO_NUEVO= "categorias/nuevaCategoria";
+	private final String NOMBRE_SERVICIO_ELIMINAR= "categorias/deleteCategoria/2";
 
 	private final String STATUS_OK = "200";
-	private final Integer NUM_TOTAL_AUTORES = 5;
+
 
 	@Before
 	public void setUp() throws Exception {
 	     this.base = new URL("http://localhost:" + port + "/"+ NOMBRE_SERVICIO);
 	     this.baseById = new URL("http://localhost:" + port + "/"+ NOMBRE_SERVICIO_BY_ID);
 	     this.baseNuevaCategoria = new URL("http://localhost:" + port + "/"+ NOMBRE_SERVICIO_NUEVO);
+	     this.baseEliminarCategoria = new URL("http://localhost:" + port + "/"+ NOMBRE_SERVICIO_ELIMINAR);
 	}
-
-	@Test
-	public void getListCategorias() throws Exception {
-
-
-		testSelectAll(5);
-
-	 }
 
 	@Test
 	public void getCategoriaById() throws Exception {
@@ -77,6 +73,8 @@ public class CategoriasControllerTestIT {
 
 	@Test
 	public void nuevaCategoria() throws Exception {
+		Integer total = getTotal();
+
 		Gson gson = new Gson();
 
 		CategoriaDTO categoriaDTO = CategoriaDTO.builder().id(6)
@@ -94,7 +92,19 @@ public class CategoriasControllerTestIT {
 	     assertEquals(STATUS_OK, response.getStatusCode().toString());
 	     assertEquals(6,response.getBody().getId());
 
-	     testSelectAll(6);
+	     testSelectAll(total + 1);
+
+	 }
+
+	@Test
+	public void eliminarCategoriaById() throws Exception {
+
+		Integer total = getTotal();
+
+	     template.delete(baseEliminarCategoria.toString());
+
+
+	     testSelectAll(total - 1);
 
 	 }
 
@@ -105,5 +115,13 @@ public class CategoriasControllerTestIT {
 	     Object[] objects = response.getBody();
 	     assertEquals(totalEsperado.intValue(), objects.length);
 
+	}
+
+	private int getTotal() {
+	     ResponseEntity<Object[]> response = template.getForEntity(base.toString(), Object[].class);
+
+	     assertEquals(STATUS_OK, response.getStatusCode().toString());
+	     Object[] objects = response.getBody();
+	     return objects.length;
 	}
 }

@@ -31,4 +31,19 @@ public class EditorialServiceImpl implements EditorialService {
 		return editorialRepository.findOne(id);
 	}
 
+
+	@Override
+	public void deleteById(Integer id) {
+		log.debug("Se elimina la editorial con id:" + id);
+		editorialRepository.delete(id);
+
+	}
+
+
+	@Override
+	public Editorial nuevaEditorial(Editorial editorial) {
+		log.debug("Se añade la editorial:" + editorial);
+		return editorialRepository.save(editorial);
+	}
+
 }

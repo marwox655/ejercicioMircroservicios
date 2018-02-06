@@ -38,4 +38,12 @@ public class CategoriaServiceImpl implements CategoriaService {
 		return categoriaRepository.save(categoria);
 
 	}
+
+
+	@Override
+	public void deleteById(Integer id) {
+		log.debug("Se elimina la categoria con id:" + id);
+		categoriaRepository.delete(id);
+
+	}
 }

@@ -11,4 +11,6 @@ public interface AutorService {
     public Autor findById(Integer id);
 
     public void deleteById(Integer id);
+
+    public Autor nuevoAutor(Autor autor);
 }
