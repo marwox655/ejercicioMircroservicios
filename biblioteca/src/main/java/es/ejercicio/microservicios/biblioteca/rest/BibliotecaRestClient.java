@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import es.ejercicio.microservicios.dto.AutorDTO;
 import es.ejercicio.microservicios.dto.CategoriaDTO;
+import es.ejercicio.microservicios.dto.ClienteDTO;
 import es.ejercicio.microservicios.dto.EditorialDTO;
 import es.ejercicio.microservicios.dto.LibroBibliotecaDTO;
 import es.ejercicio.microservicios.dto.LibroDTO;
@@ -23,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class BibliotecaRestClient {
 
-
+	
 	@Value("${path.libros.getAll}")
 	@Getter private String sURL_Libros;
 
@@ -32,6 +33,9 @@ public class BibliotecaRestClient {
 
 	@Value("${path.libros.getByExample}")
 	@Getter private String sURL_LibrosByExample;
+	
+	@Value("${path.libros.getLibro}")
+	@Getter private String sURL_LibrosId;
 
 	@Value("${path.categorias.getId}")
 	@Getter private String sURL_CategoriaId;
@@ -44,6 +48,17 @@ public class BibliotecaRestClient {
 
 	@Value("${path.autor.deleteId}")
 	@Getter private String sURL_DeleteAutorId;
+	
+	@Value("${path.clientes.getAll}")
+	@Getter private String sURL_Clientes;
+	
+	@Value("${path.clientes.getId}")
+	@Getter private String sURL_ClienteId;
+	
+	@Value("${path.clientes.deleteId}")
+	@Getter private String sURL_DeleteClienteId;
+	
+	
 
 	@Autowired
     private RestTemplate restTemplate;
@@ -75,6 +90,14 @@ public class BibliotecaRestClient {
 		return listaLibros;
 
 	}
+	
+	public LibroDTO getLibro(Integer id) {
+		String sURL = sURL_LibrosId.concat(id.toString());
+		LibroDTO libro = restTemplate.getForObject(sURL, LibroDTO.class);
+
+		return libro;
+	}
+	
 
 	public CategoriaDTO getCategoria(Integer idCategoria) {
 		String sURL = sURL_CategoriaId.concat(idCategoria.toString());
@@ -102,6 +125,15 @@ public class BibliotecaRestClient {
 		restTemplate.delete(sURL);
 
 	}
+	
+	public ClienteDTO getCliente(Integer idCliente) {
+		String sURL = sURL_ClienteId.concat(idCliente.toString());
+		ClienteDTO cliente = restTemplate.getForObject(sURL, ClienteDTO.class);
+
+		return cliente;
+	}
+	
+	
 
     public LibroBibliotecaDTO obtenerValoresLibro(LibroDTO libro) {
     	log.debug("Se obtienen los datos del libro:" + libro);
