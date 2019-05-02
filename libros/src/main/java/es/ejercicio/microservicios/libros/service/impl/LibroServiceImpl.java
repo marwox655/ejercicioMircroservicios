@@ -40,4 +40,18 @@ public class LibroServiceImpl implements LibroService {
 		return libroRepository.findAll(exLibro);
 	}
 
+
+	@Override
+	public Libro findById(String id) {
+		log.debug("Se obtiene el libro con id:" + id);
+		Integer c = null;
+		
+		try {
+			 c = Integer.parseInt(id);
+		}catch(NumberFormatException e) {
+			log.error("Tipo erroneo");
+		}
+		return libroRepository.findOne(c);
+	}
+
 }

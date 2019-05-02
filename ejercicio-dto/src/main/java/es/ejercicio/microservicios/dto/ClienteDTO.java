@@ -1,13 +1,12 @@
 package es.ejercicio.microservicios.dto;
 
 import lombok.AllArgsConstructor;
-
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @author Juan Manuel Cintas
+ * @author Fernando Piote
  *
  */
 
@@ -15,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AutorDTO {
+public class ClienteDTO {
 
     /**
      * Id.
@@ -23,7 +22,7 @@ public class AutorDTO {
     private int id;
 
     /**
-     * Nombre del autor.
+     * Nombre del cliente.
      */
     private String nombre;
 

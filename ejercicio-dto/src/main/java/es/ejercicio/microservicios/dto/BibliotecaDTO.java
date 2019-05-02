@@ -6,26 +6,33 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * @author Juan Manuel Cintas
- *
- */
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AutorDTO {
 
-    /**
+public class BibliotecaDTO {
+	
+	 /**
      * Id.
      */
-    private int id;
-
+	private int id;
+    
     /**
-     * Nombre del autor.
+     * fecha.
      */
-    private String nombre;
-
-
+	private String fecha;
+	
+	 /**
+     * fechaDev.
+     */
+	private String fechadev;
+	
+	/**
+	 * IdLibro
+	 */
+	private int idlibro;
+	
+	private int idusuario;
 }

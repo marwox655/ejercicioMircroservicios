@@ -14,4 +14,6 @@ import es.ejercicio.microservicios.libros.entity.Libro;
 public interface LibroRepository extends JpaRepository<Libro, Integer>, QueryByExampleExecutor<Libro> {
 
     public List<Libro> findByFavoriteTrue();
+
+	
 }
